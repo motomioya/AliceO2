@@ -1,4 +1,4 @@
-# Changes since 2021-11-18
+# Changes since 2021-11-19
 
 ## Changes in Algorithm
 
@@ -9,15 +9,13 @@
 - [#7654](https://github.com/AliceO2Group/AliceO2/pull/7654) 2021-11-19: add flag for PV contributor by [@jgrosseo](https://github.com/jgrosseo)
 - [#7688](https://github.com/AliceO2Group/AliceO2/pull/7688) 2021-11-23: DPL: move to the new FairLogger API by [@ktf](https://github.com/ktf)
 - [#7693](https://github.com/AliceO2Group/AliceO2/pull/7693) 2021-11-23: Swtich to lowercase log levels for new FairLogger (ITSMFT) by [@davidrohr](https://github.com/davidrohr)
-- [#7691](https://github.com/AliceO2Group/AliceO2/pull/7691) 2021-11-24: Swtich to lowercase log levels for new FairLogger (EMCAL) by [@davidrohr](https://github.com/davidrohr)
-- [#7701](https://github.com/AliceO2Group/AliceO2/pull/7701) 2021-11-25: Swtich to lowercase log levels for new FairLogger (TOF) by [@davidrohr](https://github.com/davidrohr)
 - [#7748](https://github.com/AliceO2Group/AliceO2/pull/7748) 2021-11-26: Switch to lowercase log levels for new FairLogger (Framework) by [@davidrohr](https://github.com/davidrohr)
 - [#7704](https://github.com/AliceO2Group/AliceO2/pull/7704) 2021-11-26: Swtich to lowercase log levels for new FairLogger (DataFormats) by [@davidrohr](https://github.com/davidrohr)
 - [#7726](https://github.com/AliceO2Group/AliceO2/pull/7726) 2021-11-30: DPL Analysis: introduce filter selection caching by [@aalkin](https://github.com/aalkin)
 - [#7761](https://github.com/AliceO2Group/AliceO2/pull/7761) 2021-12-01: [EMCAL-507] Remove custom end-of-stream handling via EMCALBlockHeader by [@mfasDa](https://github.com/mfasDa)
+- [#7762](https://github.com/AliceO2Group/AliceO2/pull/7762) 2021-12-03: Adding protection for straight MFT tracks, to prevent divison by zero by [@sarahherrmann](https://github.com/sarahherrmann)
 ## Changes in Common
 
-- [#7651](https://github.com/AliceO2Group/AliceO2/pull/7651) 2021-11-18: DPL: improve / fix metrics for the dashboard  by [@ktf](https://github.com/ktf)
 - [#7630](https://github.com/AliceO2Group/AliceO2/pull/7630) 2021-11-19: [EMCAL-566] Fix Gauss fit in boost histogram utils by [@jokonig](https://github.com/jokonig)
 - [#7670](https://github.com/AliceO2Group/AliceO2/pull/7670) 2021-11-20: DPL GUI: send up to 10 updates per second for the data relayer GUI by [@ktf](https://github.com/ktf)
 - [#7682](https://github.com/AliceO2Group/AliceO2/pull/7682) 2021-11-22: Store GRPxxx objects under ccdb_object name by [@shahor02](https://github.com/shahor02)
@@ -25,22 +23,17 @@
 - [#7705](https://github.com/AliceO2Group/AliceO2/pull/7705) 2021-11-23: Swtich to lowercase log levels for new FairLogger (Common) by [@davidrohr](https://github.com/davidrohr)
 - [#7694](https://github.com/AliceO2Group/AliceO2/pull/7694) 2021-11-23: Swtich to lowercase log levels for new FairLogger (HMPID) by [@davidrohr](https://github.com/davidrohr)
 - [#7739](https://github.com/AliceO2Group/AliceO2/pull/7739) 2021-11-25: AOD: fixe memory leak + allow overwriting metadata by [@shahor02](https://github.com/shahor02)
-- [#7700](https://github.com/AliceO2Group/AliceO2/pull/7700) 2021-11-25: Swtich to lowercase log levels for new FairLogger (TRD) by [@davidrohr](https://github.com/davidrohr)
 - [#7747](https://github.com/AliceO2Group/AliceO2/pull/7747) 2021-11-26: Forlogger migration of more expressions, not caught in first regex by [@davidrohr](https://github.com/davidrohr)
 - [#7748](https://github.com/AliceO2Group/AliceO2/pull/7748) 2021-11-26: Switch to lowercase log levels for new FairLogger (Framework) by [@davidrohr](https://github.com/davidrohr)
 - [#7704](https://github.com/AliceO2Group/AliceO2/pull/7704) 2021-11-26: Swtich to lowercase log levels for new FairLogger (DataFormats) by [@davidrohr](https://github.com/davidrohr)
-- [#7696](https://github.com/AliceO2Group/AliceO2/pull/7696) 2021-11-26: Swtich to lowercase log levels for new FairLogger (MUON) by [@davidrohr](https://github.com/davidrohr)
 - [#7718](https://github.com/AliceO2Group/AliceO2/pull/7718) 2021-11-30: Add trigger word to EMC and FV0 CTF by [@shahor02](https://github.com/shahor02)
 - [#7764](https://github.com/AliceO2Group/AliceO2/pull/7764) 2021-12-01: CTF dictionaries are ready to be fetched from CCDB by [@shahor02](https://github.com/shahor02)
 ## Changes in DataFormats
 
-- [#7650](https://github.com/AliceO2Group/AliceO2/pull/7650) 2021-11-18: GPU: Fix standalone compilation after TPC dEdx changes by [@davidrohr](https://github.com/davidrohr)
-- [#7641](https://github.com/AliceO2Group/AliceO2/pull/7641) 2021-11-18: fix in tof calib data structure by [@noferini](https://github.com/noferini)
 - [#7647](https://github.com/AliceO2Group/AliceO2/pull/7647) 2021-11-19: Method to refit vertex with partial set of its tracks by [@shahor02](https://github.com/shahor02)
 - [#7682](https://github.com/AliceO2Group/AliceO2/pull/7682) 2021-11-22: Store GRPxxx objects under ccdb_object name by [@shahor02](https://github.com/shahor02)
 - [#7679](https://github.com/AliceO2Group/AliceO2/pull/7679) 2021-11-23: fixes in TOF calibration workflow by [@noferini](https://github.com/noferini)
 - [#7734](https://github.com/AliceO2Group/AliceO2/pull/7734) 2021-11-25: Enable TRD calibration with TPC-TRD tracks by [@martenole](https://github.com/martenole)
-- [#7700](https://github.com/AliceO2Group/AliceO2/pull/7700) 2021-11-25: Swtich to lowercase log levels for new FairLogger (TRD) by [@davidrohr](https://github.com/davidrohr)
 - [#7724](https://github.com/AliceO2Group/AliceO2/pull/7724) 2021-11-25: TRD fix to get tracklets and digits out of sm16 and sm17 by [@bazinski](https://github.com/bazinski)
 - [#7704](https://github.com/AliceO2Group/AliceO2/pull/7704) 2021-11-26: Swtich to lowercase log levels for new FairLogger (DataFormats) by [@davidrohr](https://github.com/davidrohr)
 - [#7753](https://github.com/AliceO2Group/AliceO2/pull/7753) 2021-11-28: Changes to inject MC TF timestamp to DPH.creation time by [@shahor02](https://github.com/shahor02)
@@ -48,14 +41,12 @@
 - [#7718](https://github.com/AliceO2Group/AliceO2/pull/7718) 2021-11-30: Add trigger word to EMC and FV0 CTF by [@shahor02](https://github.com/shahor02)
 - [#7764](https://github.com/AliceO2Group/AliceO2/pull/7764) 2021-12-01: CTF dictionaries are ready to be fetched from CCDB by [@shahor02](https://github.com/shahor02)
 - [#7759](https://github.com/AliceO2Group/AliceO2/pull/7759) 2021-12-01: Includes MCH-MID matches in Global Fwd Workflow and other improvements by [@rpezzi](https://github.com/rpezzi)
+- [#7794](https://github.com/AliceO2Group/AliceO2/pull/7794) 2021-12-02: MCTrackNavigator: Access Daughter0 and Daughter1 by [@sawenzel](https://github.com/sawenzel)
+- [#7784](https://github.com/AliceO2Group/AliceO2/pull/7784) 2021-12-02: RecoContainer: Better support for MFTMCH and MFTMCHMID tracks by [@rpezzi](https://github.com/rpezzi)
 - [#7774](https://github.com/AliceO2Group/AliceO2/pull/7774) 2021-12-02: [EMCAL-729] Add compression of trigger bits by [@mfasDa](https://github.com/mfasDa)
+- [#7785](https://github.com/AliceO2Group/AliceO2/pull/7785) 2021-12-03: [EMCAL-645] Make cell index range in event handler const by [@mfasDa](https://github.com/mfasDa)
 ## Changes in Detectors
 
-- [#7655](https://github.com/AliceO2Group/AliceO2/pull/7655) 2021-11-18: Disable broken unit test on Mac M1 by [@TimoWilken](https://github.com/TimoWilken)
-- [#7650](https://github.com/AliceO2Group/AliceO2/pull/7650) 2021-11-18: GPU: Fix standalone compilation after TPC dEdx changes by [@davidrohr](https://github.com/davidrohr)
-- [#7638](https://github.com/AliceO2Group/AliceO2/pull/7638) 2021-11-18: Update electronics delays by [@dstocco](https://github.com/dstocco)
-- [#7634](https://github.com/AliceO2Group/AliceO2/pull/7634) 2021-11-18: [EMCAL-735] Switch of trailer merging in RawReaderMemory for STU pages by [@mfasDa](https://github.com/mfasDa)
-- [#7641](https://github.com/AliceO2Group/AliceO2/pull/7641) 2021-11-18: fix in tof calib data structure by [@noferini](https://github.com/noferini)
 - [#7635](https://github.com/AliceO2Group/AliceO2/pull/7635) 2021-11-19: Class to handle the MID readout card configuration and response by [@dstocco](https://github.com/dstocco)
 - [#7649](https://github.com/AliceO2Group/AliceO2/pull/7649) 2021-11-19: Make AOD tfNumber cross/inter-run unique by [@shahor02](https://github.com/shahor02)
 - [#7647](https://github.com/AliceO2Group/AliceO2/pull/7647) 2021-11-19: Method to refit vertex with partial set of its tracks by [@shahor02](https://github.com/shahor02)
@@ -77,16 +68,10 @@
 - [#7699](https://github.com/AliceO2Group/AliceO2/pull/7699) 2021-11-23: Swtich to lowercase log levels for new FairLogger (ZDC) by [@davidrohr](https://github.com/davidrohr)
 - [#7679](https://github.com/AliceO2Group/AliceO2/pull/7679) 2021-11-23: fixes in TOF calibration workflow by [@noferini](https://github.com/noferini)
 - [#7716](https://github.com/AliceO2Group/AliceO2/pull/7716) 2021-11-24: AOD: include all primaries put by generator by [@sawenzel](https://github.com/sawenzel)
-- [#7692](https://github.com/AliceO2Group/AliceO2/pull/7692) 2021-11-24: Swtich to lowercase log levels for new FairLogger (Detectors) by [@davidrohr](https://github.com/davidrohr)
-- [#7691](https://github.com/AliceO2Group/AliceO2/pull/7691) 2021-11-24: Swtich to lowercase log levels for new FairLogger (EMCAL) by [@davidrohr](https://github.com/davidrohr)
 - [#7739](https://github.com/AliceO2Group/AliceO2/pull/7739) 2021-11-25: AOD: fixe memory leak + allow overwriting metadata by [@shahor02](https://github.com/shahor02)
 - [#7721](https://github.com/AliceO2Group/AliceO2/pull/7721) 2021-11-25: Disable 3rd iteration until further optimisation by [@mpuccio](https://github.com/mpuccio)
 - [#7734](https://github.com/AliceO2Group/AliceO2/pull/7734) 2021-11-25: Enable TRD calibration with TPC-TRD tracks by [@martenole](https://github.com/martenole)
 - [#7720](https://github.com/AliceO2Group/AliceO2/pull/7720) 2021-11-25: Set decoded ROF IR asap, to avoid its loss in case of error by [@shahor02](https://github.com/shahor02)
-- [#7695](https://github.com/AliceO2Group/AliceO2/pull/7695) 2021-11-25: Swtich to lowercase log levels for new FairLogger (FIT) by [@davidrohr](https://github.com/davidrohr)
-- [#7697](https://github.com/AliceO2Group/AliceO2/pull/7697) 2021-11-25: Swtich to lowercase log levels for new FairLogger (PHOS) by [@davidrohr](https://github.com/davidrohr)
-- [#7701](https://github.com/AliceO2Group/AliceO2/pull/7701) 2021-11-25: Swtich to lowercase log levels for new FairLogger (TOF) by [@davidrohr](https://github.com/davidrohr)
-- [#7700](https://github.com/AliceO2Group/AliceO2/pull/7700) 2021-11-25: Swtich to lowercase log levels for new FairLogger (TRD) by [@davidrohr](https://github.com/davidrohr)
 - [#7732](https://github.com/AliceO2Group/AliceO2/pull/7732) 2021-11-25: TPC: Improve krypton raw filter by [@wiechula](https://github.com/wiechula)
 - [#7724](https://github.com/AliceO2Group/AliceO2/pull/7724) 2021-11-25: TRD fix to get tracklets and digits out of sm16 and sm17 by [@bazinski](https://github.com/bazinski)
 - [#7731](https://github.com/AliceO2Group/AliceO2/pull/7731) 2021-11-25: Update TRD digit and tracklet readers by [@martenole](https://github.com/martenole)
@@ -94,8 +79,6 @@
 - [#7745](https://github.com/AliceO2Group/AliceO2/pull/7745) 2021-11-26: MCH: fix small type error by [@aphecetche](https://github.com/aphecetche)
 - [#7749](https://github.com/AliceO2Group/AliceO2/pull/7749) 2021-11-26: Remaining fairLogger log level corrections by [@davidrohr](https://github.com/davidrohr)
 - [#7704](https://github.com/AliceO2Group/AliceO2/pull/7704) 2021-11-26: Swtich to lowercase log levels for new FairLogger (DataFormats) by [@davidrohr](https://github.com/davidrohr)
-- [#7696](https://github.com/AliceO2Group/AliceO2/pull/7696) 2021-11-26: Swtich to lowercase log levels for new FairLogger (MUON) by [@davidrohr](https://github.com/davidrohr)
-- [#7698](https://github.com/AliceO2Group/AliceO2/pull/7698) 2021-11-26: Swtich to lowercase log levels for new FairLogger (TPC) by [@davidrohr](https://github.com/davidrohr)
 - [#7743](https://github.com/AliceO2Group/AliceO2/pull/7743) 2021-11-26: TRD move 1617 fix to correct place. by [@bazinski](https://github.com/bazinski)
 - [#7725](https://github.com/AliceO2Group/AliceO2/pull/7725) 2021-11-28: Add trigger masks from CTP by [@nburmaso](https://github.com/nburmaso)
 - [#7753](https://github.com/AliceO2Group/AliceO2/pull/7753) 2021-11-28: Changes to inject MC TF timestamp to DPH.creation time by [@shahor02](https://github.com/shahor02)
@@ -110,9 +93,13 @@
 - [#7759](https://github.com/AliceO2Group/AliceO2/pull/7759) 2021-12-01: Includes MCH-MID matches in Global Fwd Workflow and other improvements by [@rpezzi](https://github.com/rpezzi)
 - [#7761](https://github.com/AliceO2Group/AliceO2/pull/7761) 2021-12-01: [EMCAL-507] Remove custom end-of-stream handling via EMCALBlockHeader by [@mfasDa](https://github.com/mfasDa)
 - [#7786](https://github.com/AliceO2Group/AliceO2/pull/7786) 2021-12-02: Fixes MCH Digits Labels by [@rpezzi](https://github.com/rpezzi)
+- [#7784](https://github.com/AliceO2Group/AliceO2/pull/7784) 2021-12-02: RecoContainer: Better support for MFTMCH and MFTMCHMID tracks by [@rpezzi](https://github.com/rpezzi)
 - [#7735](https://github.com/AliceO2Group/AliceO2/pull/7735) 2021-12-02: TPCQC: fix merge function for Clusters object by [@tklemenz](https://github.com/tklemenz)
 - [#7774](https://github.com/AliceO2Group/AliceO2/pull/7774) 2021-12-02: [EMCAL-729] Add compression of trigger bits by [@mfasDa](https://github.com/mfasDa)
+- [#7783](https://github.com/AliceO2Group/AliceO2/pull/7783) 2021-12-02: [Global Fwd Tracking] Improve configuration of MFTMCH matching by [@rpezzi](https://github.com/rpezzi)
 - [#7776](https://github.com/AliceO2Group/AliceO2/pull/7776) 2021-12-02: add time cut for T0 participants by [@AllaMaevskaya](https://github.com/AllaMaevskaya)
+- [#7792](https://github.com/AliceO2Group/AliceO2/pull/7792) 2021-12-03: TPC QC: proper name for N_RawDigits plot by [@tklemenz](https://github.com/tklemenz)
+- [#7785](https://github.com/AliceO2Group/AliceO2/pull/7785) 2021-12-03: [EMCAL-645] Make cell index range in event handler const by [@mfasDa](https://github.com/mfasDa)
 ## Changes in EventVisualisation
 
 - [#7703](https://github.com/AliceO2Group/AliceO2/pull/7703) 2021-11-23: Swtich to lowercase log levels for new FairLogger (ED) by [@davidrohr](https://github.com/davidrohr)
@@ -122,10 +109,6 @@
 - [#7713](https://github.com/AliceO2Group/AliceO2/pull/7713) 2021-11-24: Swtich to lowercase log levels for new FairLogger (run) by [@davidrohr](https://github.com/davidrohr)
 ## Changes in Framework
 
-- [#7659](https://github.com/AliceO2Group/AliceO2/pull/7659) 2021-11-18: DPL GUI: add lifetime information to GUI by [@ktf](https://github.com/ktf)
-- [#7648](https://github.com/AliceO2Group/AliceO2/pull/7648) 2021-11-18: DPL: avoid confusing stacktrace when workflow is empty by [@ktf](https://github.com/ktf)
-- [#7651](https://github.com/AliceO2Group/AliceO2/pull/7651) 2021-11-18: DPL: improve / fix metrics for the dashboard  by [@ktf](https://github.com/ktf)
-- [#7636](https://github.com/AliceO2Group/AliceO2/pull/7636) 2021-11-18: DPL: try to re-add AOD writer regardless if it is already present by [@aalkin](https://github.com/aalkin)
 - [#7665](https://github.com/AliceO2Group/AliceO2/pull/7665) 2021-11-19: Putting dynamic column in the right table by [@jgrosseo](https://github.com/jgrosseo)
 - [#7654](https://github.com/AliceO2Group/AliceO2/pull/7654) 2021-11-19: add flag for PV contributor by [@jgrosseo](https://github.com/jgrosseo)
 - [#7670](https://github.com/AliceO2Group/AliceO2/pull/7670) 2021-11-20: DPL GUI: send up to 10 updates per second for the data relayer GUI by [@ktf](https://github.com/ktf)
@@ -154,6 +137,9 @@
 - [#7768](https://github.com/AliceO2Group/AliceO2/pull/7768) 2021-11-30: DPL: cleanup struct to tuple by [@ktf](https://github.com/ktf)
 - [#7772](https://github.com/AliceO2Group/AliceO2/pull/7772) 2021-11-30: Drop old example for FLP Qualification process by [@ktf](https://github.com/ktf)
 - [#7765](https://github.com/AliceO2Group/AliceO2/pull/7765) 2021-11-30: Revert "DPL Analysis: ability to read and write variable list arrays" by [@ktf](https://github.com/ktf)
+- [#7762](https://github.com/AliceO2Group/AliceO2/pull/7762) 2021-12-03: Adding protection for straight MFT tracks, to prevent divison by zero by [@sarahherrmann](https://github.com/sarahherrmann)
+- [#7796](https://github.com/AliceO2Group/AliceO2/pull/7796) 2021-12-03: DPL Analysis: make sure all supported types can be used in vector columns by [@aalkin](https://github.com/aalkin)
+- [#7795](https://github.com/AliceO2Group/AliceO2/pull/7795) 2021-12-03: DPL: allow for "Dict" config param spec by [@ktf](https://github.com/ktf)
 ## Changes in Generators
 
 - [#7709](https://github.com/AliceO2Group/AliceO2/pull/7709) 2021-11-24: Swtich to lowercase log levels for new FairLogger (Generators) by [@davidrohr](https://github.com/davidrohr)
