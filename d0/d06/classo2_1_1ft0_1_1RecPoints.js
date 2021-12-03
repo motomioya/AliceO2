@@ -1,0 +1,25 @@
+var classo2_1_1ft0_1_1RecPoints =
+[
+    [ "TimeMean", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aac3c9790db46715ebbe57c094b03efc1a795889657d6b1969c4109a894ffc1de1", null ],
+    [ "TimeA", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aac3c9790db46715ebbe57c094b03efc1a1a6d1a4a3aeab993e5fd196cf8d640cb", null ],
+    [ "TimeC", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aac3c9790db46715ebbe57c094b03efc1acd0cbddd47cafa9291bd431dee3880a5", null ],
+    [ "Vertex", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aac3c9790db46715ebbe57c094b03efc1a335b1812ae7cf1e089102c223e788299", null ],
+    [ "RecPoints", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a62aed3aeefae38d05d3aee11ba477b67", null ],
+    [ "RecPoints", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#acf33f9aaf5853f7fd1dd8cbe3e94be2e", null ],
+    [ "~RecPoints", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#af5b4a5ad011eb3eca8418ed49f25afca", null ],
+    [ "getBunchChannelData", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#af8d09b2cd61dd2d3fc8b2ebeecf52630", null ],
+    [ "getCollisionTime", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a9be36c39d073b1a0b1fb0333120437dc", null ],
+    [ "getCollisionTimeA", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a0f16b5ea5a6e93ab542e69c668daad42", null ],
+    [ "getCollisionTimeC", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a4c45776c78be08d29ff8d0803168dd99", null ],
+    [ "getCollisionTimeMean", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a93c663e7d78c8886947b93006e9c776d", null ],
+    [ "getInteractionRecord", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aad3a042c9eaf508bac80303a2482dee1", null ],
+    [ "getTrigger", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a3e9ec4b7fd472982cf97f081038c8ccc", null ],
+    [ "getVertex", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a732811edb865577c8c2ef15e639fb0ef", null ],
+    [ "isValidTime", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a55a50cc1d7aac320ed1a9951de1af365", null ],
+    [ "print", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#ad02a1ba5689151699ee176e73360f065", null ],
+    [ "setCollisionTime", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#aeac79111080d212661f0dda8aab86a0d", null ],
+    [ "setTriggers", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a72a86c64a335c2759685c876cdaee21c", null ],
+    [ "setVertex", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#add7a86517153d6cc83aa0ccde6105967", null ],
+    [ "mIntRecord", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#af07659cb650a587b1de7376eb5f9c664", null ],
+    [ "ref", "d0/d06/classo2_1_1ft0_1_1RecPoints.html#a300e687e7e8d5ac150a51451558e6106", null ]
+];
