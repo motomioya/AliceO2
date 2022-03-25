@@ -104,6 +104,10 @@ void MFTAssessment::reset()
     for (auto& h : mTH3Histos) {
       h->Reset();
     }
+    
+    mAcceptanceEta->Reset();
+    mEfficiencyEta->Reset();
+    mEffAccEta->Reset();
   }
 }
 
