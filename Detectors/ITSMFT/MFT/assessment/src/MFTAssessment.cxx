@@ -279,6 +279,16 @@ void MFTAssessment::createHistos()
       h->GetZaxis()->SetTitle(TH3ZaxisTitles[n3Histo]);
       ++n3Histo;
     }
+
+    mAcceptanceEta = std::make_unique<TGraph>;
+    mAcceptanceEta->SetSetName("mMFTAcceptanceEta");
+    mAcceptanceEta->SetTitle("Acceptance of MFT tracks");
+    mEfficiencyEta = std::make_unique<TGraph>;
+    mEfficiencyEta->SetName("mMFTEfficiencyEta");
+    mEfficiencyEta->SetTitle("Efficiency of MFT tracks");
+    mEffAccEta = std::make_unique<TGraph>;
+    mEffAccEta->SetName("mMFTEffAccEta");
+    mEffAccEta->SetTitle("Eff. x Acc. of MFT tracks");
   }
 }
 
@@ -652,6 +662,9 @@ void MFTAssessment::getHistos(TObjArray& objar)
       for (int slicedCanvas = 0; slicedCanvas < kNSlicedTH3; slicedCanvas++) {
         objar.Add(mSlicedCanvas[slicedCanvas]);
       }
+      objar.Add(mAcceptanceEta.get());
+      objar.Add(mEfficiencyEta.get());
+      objar.Add(mEffAccEta.get());
     }
   }
 }
@@ -850,6 +863,9 @@ bool MFTAssessment::loadHistos()
       h = std::unique_ptr<TH3F>((TH3F*)f->Get(TH3Names[n3Histo]));
       ++n3Histo;
     }
+    mAcceptanceEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTAcceptanceEta"));
+    mEfficiencyEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTEfficiencyEta"));
+    mEffAccEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTEffAccEta"));
   }
   return true;
 }
