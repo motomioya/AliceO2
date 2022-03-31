@@ -280,15 +280,9 @@ void MFTAssessment::createHistos()
       ++n3Histo;
     }
 
-    mAcceptanceEta = std::make_unique<TGraph>;
-    mAcceptanceEta->SetSetName("mMFTAcceptanceEta");
-    mAcceptanceEta->SetTitle("Acceptance of MFT tracks");
-    mEfficiencyEta = std::make_unique<TGraph>;
-    mEfficiencyEta->SetName("mMFTEfficiencyEta");
-    mEfficiencyEta->SetTitle("Efficiency of MFT tracks");
-    mEffAccEta = std::make_unique<TGraph>;
-    mEffAccEta->SetName("mMFTEffAccEta");
-    mEffAccEta->SetTitle("Eff. x Acc. of MFT tracks");
+    mAcceptanceEta = std::make_unique<TH1F>("mMFTAcceptanceEta", "MFT Acceptance", 35, 1.0, 4.5);
+    mEfficiencyEta = std::make_unique<TH1F>("mMFTEfficiencyEta", "MFT Efficiency", 35, 1.0, 4.5);
+    mEffAccEta = std::make_unique<TH1F>("mMFTEffAccEta", "MFT Efficiency x Acceptance", 35, 1.0, 4.5);
   }
 }
 
@@ -863,9 +857,9 @@ bool MFTAssessment::loadHistos()
       h = std::unique_ptr<TH3F>((TH3F*)f->Get(TH3Names[n3Histo]));
       ++n3Histo;
     }
-    mAcceptanceEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTAcceptanceEta"));
-    mEfficiencyEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTEfficiencyEta"));
-    mEffAccEta = std::unique_ptr<TGraph>((TGraph*)f->Get("mMFTEffAccEta"));
+    mAcceptanceEta = std::unique_ptr<TH1F>((TH1F*)f->Get("mMFTAcceptanceEta"));
+    mEfficiencyEta = std::unique_ptr<TH1F>((TH1F*)f->Get("mMFTEfficiencyEta"));
+    mEffAccEta = std::unique_ptr<TH1F>((TH1F*)f->Get("mMFTEffAccEta"));
   }
   return true;
 }
@@ -894,5 +888,14 @@ void MFTAssessment::finalizeAnalysis()
       mSlicedCanvas[nCanvas] = new TCanvas(TH3SlicedNames[nCanvas], TH3SlicedNames[nCanvas], 1080, 1080);
       TH3Slicer(mSlicedCanvas[nCanvas], mTH3Histos[TH3SlicedMap[nCanvas]], sliceList, sliceWindow, 2);
     }
+
+    auto GenEtaProj = (TH1*)mHistPhiVsEta[kGen]->ProjectionX("_GenEtaProj");
+    auto RecoEtaProj = (TH1*)mHistPhiVsEta[kReco]->ProjectionX("_RecoEtaProj");
+    auto TrackableEtaProj = (TH1*)mHistPhiVsEta[kTrackable]->ProjectionX("_TrackableEtaProj");
+
+
+    mAcceptanceEta->Divide(TrackableEtaProj,GenEtaProj);
+    mEfficiencyEta->Divide(RecoEtaProj,TrackableEtaProj);
+    mEffAccEta->Divide(RecoEtaProj,GenEtaProj);
   }
 }

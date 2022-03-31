@@ -713,53 +713,53 @@ void GloFwdAssessment::finalizePurityAndEff()
   auto canvasName = GMAssesmentNames[nCanvas];
   mAssessmentCanvas[nCanvas] = new TCanvas(canvasName, canvasName, 1080, 800);
   mAssessmentCanvas[nCanvas]->UseCurrentStyle();
-  mAssessmentCanvas[nCanvas]->cd();
-  auto first = true;
-  std::string option;
+	  mAssessmentCanvas[nCanvas]->cd();
+	  auto first = true;
+	  std::string option;
 
-  std::vector<float> verylowPtOuterPurity;
-  std::vector<float> verylowPtInnerPurity;
-  std::vector<float> verylowPtOuterEff;
-  std::vector<float> verylowPtInnerEff;
-  std::vector<float> veryLowPtOuterTrueEff;
-  std::vector<float> veryLowPtInnerTrueEff;
-  std::vector<float> lowPtOuterPurity;
-  std::vector<float> lowPtInnerPurity;
-  std::vector<float> lowPtOuterEff;
-  std::vector<float> lowPtInnerEff;
-  std::vector<float> lowPtOuterTrueEff;
-  std::vector<float> lowPtInnerTrueEff;
-  std::vector<float> highPtOuterPurity;
-  std::vector<float> highPtInnerPurity;
-  std::vector<float> highPtOuterEff;
-  std::vector<float> highPtInnerEff;
-  std::vector<float> highPtOuterTrueEff;
-  std::vector<float> highPtInnerTrueEff;
+	  std::vector<float> verylowPtOuterPurity;
+	  std::vector<float> verylowPtInnerPurity;
+	  std::vector<float> verylowPtOuterEff;
+	  std::vector<float> verylowPtInnerEff;
+	  std::vector<float> veryLowPtOuterTrueEff;
+	  std::vector<float> veryLowPtInnerTrueEff;
+	  std::vector<float> lowPtOuterPurity;
+	  std::vector<float> lowPtInnerPurity;
+	  std::vector<float> lowPtOuterEff;
+	  std::vector<float> lowPtInnerEff;
+	  std::vector<float> lowPtOuterTrueEff;
+	  std::vector<float> lowPtInnerTrueEff;
+	  std::vector<float> highPtOuterPurity;
+	  std::vector<float> highPtInnerPurity;
+	  std::vector<float> highPtOuterEff;
+	  std::vector<float> highPtInnerEff;
+	  std::vector<float> highPtOuterTrueEff;
+	  std::vector<float> highPtInnerTrueEff;
 
-  auto veryLowptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(0.25);
-  auto lowptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(0.75);
-  auto highptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(2.25);
+	  auto veryLowptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(0.25);
+	  auto lowptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(0.75);
+	  auto highptBin = mPurityPtOuterVecTH2.front()->GetXaxis()->FindBin(2.25);
 
-  for (auto& th2 : mPurityPtOuterVecTH2) {
-    if (first) {
-      option = "hist P PMC";
-    } else {
-      option = "hist SAME P PMC";
-    }
-    first = false;
-    th2->Draw(option.c_str());
+	  for (auto& th2 : mPurityPtOuterVecTH2) {
+	    if (first) {
+	      option = "hist P PMC";
+	    } else {
+	      option = "hist SAME P PMC";
+	    }
+	    first = false;
+	    th2->Draw(option.c_str());
 
-    verylowPtOuterPurity.push_back(th2->GetBinContent(veryLowptBin));
-    lowPtOuterPurity.push_back(th2->GetBinContent(lowptBin));
-    highPtOuterPurity.push_back(th2->GetBinContent(highptBin));
-  }
-  TPaveText* t = new TPaveText(0.2223748, 0.9069355, 0.7776252, 0.965, "brNDC");
-  t->SetBorderSize(0);
-  t->SetFillColor(gStyle->GetTitleFillColor());
-  t->AddText("Global Muon Track Purity (2.4 < #eta < 3.0)");
-  t->Draw();
+	    verylowPtOuterPurity.push_back(th2->GetBinContent(veryLowptBin));
+	    lowPtOuterPurity.push_back(th2->GetBinContent(lowptBin));
+	    highPtOuterPurity.push_back(th2->GetBinContent(highptBin));
+	  }
+	  TPaveText* t = new TPaveText(0.2223748, 0.9069355, 0.7776252, 0.965, "brNDC");
+	  t->SetBorderSize(0);
+	  t->SetFillColor(gStyle->GetTitleFillColor());
+	  t->AddText("Global Muon Track Purity (2.4 < #eta < 3.0)");
+	  t->Draw();
 
-  mAssessmentCanvas[nCanvas]->BuildLegend(.8, .15, .96, .87);
+	  mAssessmentCanvas[nCanvas]->BuildLegend(.8, .15, .96, .87);
   mAssessmentCanvas[nCanvas]->SetTicky();
   mAssessmentCanvas[nCanvas]->SetGridy();
 

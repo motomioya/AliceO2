@@ -21,7 +21,6 @@
 #include <TH3F.h>
 #include <TCanvas.h>
 #include <TEfficiency.h>
-#include <TGraph.h>
 #include <TObjArray.h>
 #include "Framework/ProcessingContext.h"
 #include "SimulationDataFormat/MCCompLabel.h"
@@ -324,9 +323,9 @@ class MFTAssessment
     {kInvQPtPullVsEta, kTH3TrackInvQPtPullPtEta},
     {kInvQPtPullVsPt, kTH3TrackInvQPtPullPtEta}};
 
-  std::unique_ptr<TGraph> mAcceptanceEta = nullptr;
-  std::unique_ptr<TGraph> mEfficiencyEta = nullptr;
-  std::unique_ptr<TGraph> mEffAccEta = nullptr;
+  std::unique_ptr<TH1F> mAcceptanceEta = nullptr;
+  std::unique_ptr<TH1F> mEfficiencyEta = nullptr;
+  std::unique_ptr<TH1F> mEffAccEta = nullptr;
 
   std::array<std::unique_ptr<TH3F>, kNTH3Histos> mTH3Histos;
   std::array<TCanvas*, kNSlicedTH3> mSlicedCanvas;
