@@ -323,6 +323,10 @@ class MFTAssessment
     {kInvQPtPullVsEta, kTH3TrackInvQPtPullPtEta},
     {kInvQPtPullVsPt, kTH3TrackInvQPtPullPtEta}};
 
+  std::unique_ptr<TH1F> mAcceptanceEta = nullptr;
+  std::unique_ptr<TH1F> mEfficiencyEta = nullptr;
+  std::unique_ptr<TH1F> mEffAccEta = nullptr;
+
   std::array<std::unique_ptr<TH3F>, kNTH3Histos> mTH3Histos;
   std::array<TCanvas*, kNSlicedTH3> mSlicedCanvas;
   void TH3Slicer(TCanvas* canvas, std::unique_ptr<TH3F>& histo3D, std::vector<float> list, double window, int iPar, float marker_size = 1.5);
