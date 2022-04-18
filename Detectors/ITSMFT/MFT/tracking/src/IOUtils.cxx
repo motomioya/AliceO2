@@ -47,9 +47,7 @@ int ioutils::loadROFrameData(const o2::itsmft::ROFRecord& rof, ROframe<T>& event
   auto clusters_in_frame = rof.getROFData(clusters);
   for (auto& c : clusters_in_frame) {
     auto sensorID = c.getSensorID();
-    LOG(info) << "sensorID = " << sensorID;
     int layer = geom->getLayer(sensorID);
-    LOG(info) << "layer  = " << layer;
     auto pattID = c.getPatternID();
     o2::math_utils::Point3D<float> locXYZ;
     float sigmaX2 = ioutils::DefClusError2Row, sigmaY2 = ioutils::DefClusError2Col; //Dummy COG errors (about half pixel size)
