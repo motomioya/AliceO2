@@ -282,6 +282,10 @@ void MFTAssessment::createHistos()
       ++n3Histo;
     }
 
+    mAcceptanceEta = std::make_unique<TH1F>("mMFTAcceptanceEta", "MFT Acceptance", 35, 1.0, 4.5);
+    mEfficiencyEta = std::make_unique<TH1F>("mMFTEfficiencyEta", "MFT Efficiency", 35, 1.0, 4.5);
+    mEffAccEta = std::make_unique<TH1F>("mMFTEffAccEta", "MFT Efficiency x Acceptance", 35, 1.0, 4.5);
+
   }
 }
 
