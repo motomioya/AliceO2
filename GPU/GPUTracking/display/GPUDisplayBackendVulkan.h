@@ -22,16 +22,14 @@
 #include <unordered_map>
 #include <utils/vecpod.h>
 
-namespace GPUCA_NAMESPACE
-{
-namespace gpu
+namespace GPUCA_NAMESPACE::gpu
 {
 
 class GPUDisplayBackendVulkan : public GPUDisplayBackend
 {
  public:
   GPUDisplayBackendVulkan();
-  ~GPUDisplayBackendVulkan();
+  ~GPUDisplayBackendVulkan() override;
 
   unsigned int DepthBits() override;
 
@@ -81,7 +79,6 @@ class GPUDisplayBackendVulkan : public GPUDisplayBackend
   void setMixDescriptor(int descriptorIndex, int imageIndex);
   void pointSizeFactor(float factor) override;
   void lineWidthFactor(float factor) override;
-  backendTypes backendType() const override { return TYPE_VULKAN; }
   void resizeScene(unsigned int width, unsigned int height) override;
   float getYFactor() const override { return -1.0f; }
   int getMaxMSAA() const override { return mMaxMSAAsupported; }
@@ -220,7 +217,6 @@ class GPUDisplayBackendVulkan : public GPUDisplayBackend
 
   vk::Fence mSingleCommitFence;
 };
-} // namespace gpu
-} // namespace GPUCA_NAMESPACE
+} // namespace GPUCA_NAMESPACE::gpu
 
 #endif

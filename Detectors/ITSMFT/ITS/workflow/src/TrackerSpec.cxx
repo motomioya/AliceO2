@@ -61,7 +61,7 @@ void TrackerDPL::init(InitContext& ic)
 
   mChainITS.reset(mRecChain->AddChain<o2::gpu::GPUChainITS>());
   mVertexer = std::make_unique<Vertexer>(mChainITS->GetITSVertexerTraits());
-  mTracker = std::make_unique<Tracker>(new TrackerTraitsCPU);
+  mTracker = std::make_unique<Tracker>(mChainITS->GetITSTrackerTraits());
 
   auto filename = ic.options().get<std::string>("grp-file");
   const auto grp = parameters::GRPObject::loadFrom(filename);
@@ -205,7 +205,6 @@ void TrackerDPL::run(ProcessingContext& pc)
   LOG(info) << "ITSTracker RO: continuous=" << continuous;
   const auto& multEstConf = FastMultEstConfig::Instance(); // parameters for mult estimation and cuts
   FastMultEst multEst;                                     // mult estimator
-
   TimeFrame* timeFrame = mChainITS->GetITSTimeframe();
   mTracker->adoptTimeFrame(*timeFrame);
   mTracker->setBz(mBz);
@@ -218,7 +217,7 @@ void TrackerDPL::run(ProcessingContext& pc)
   pattIt = patterns.begin();
   std::vector<int> savedROF;
   auto logger = [&](std::string s) { LOG(info) << s; };
-  auto fatalLogger = [&](std::string s) { LOG(fatal) << s; };
+  auto errorLogger = [&](std::string s) { LOG(error) << s; };
   int nclUsed = 0;
 
   std::vector<bool> processingMask;
@@ -243,6 +242,7 @@ void TrackerDPL::run(ProcessingContext& pc)
     // Run seeding vertexer
     vertexerElapsedTime = mVertexer->clustersToVertices(false, logger);
   }
+  // timeFrame->setMultiplicityCutMask(std::vector<bool>(false, processingMask.size())); // <===== THIS BREAKS EVERYTHING
 
   for (auto iRof{0}; iRof < rofspan.size(); ++iRof) {
     bool multCut;
@@ -286,51 +286,52 @@ void TrackerDPL::run(ProcessingContext& pc)
   LOG(info) << fmt::format(" - Beam position computed for the TF: {}, {}", timeFrame->getBeamX(), timeFrame->getBeamY());
 
   if (mCosmicsProcessing && nclUsed > 1500 * rofspan.size()) {
-    LOG(fatal) << "Cosmics processing was requested with an average detector occupancy exceeding 1.e-7, aborting.";
-  }
+    LOG(error) << "Cosmics processing was requested with an average detector occupancy exceeding 1.e-7, skipping TF processing.";
+  } else {
 
-  timeFrame->setMultiplicityCutMask(processingMask);
-  mTracker->clustersToTracks(logger, fatalLogger);
-  if (timeFrame->hasBogusClusters()) {
-    LOG(warning) << fmt::format(" - The processed timeframe had {} clusters with wild z coordinates, check the dictionaries", timeFrame->hasBogusClusters());
-  }
-
-  for (unsigned int iROF{0}; iROF < rofs.size(); ++iROF) {
-
-    auto& rof{rofs[iROF]};
-    tracks = timeFrame->getTracks(iROF);
-    trackLabels = timeFrame->getTracksLabel(iROF);
-    auto number{tracks.size()};
-    auto first{allTracks.size()};
-    int offset = -rof.getFirstEntry(); // cluster entry!!!
-    rof.setFirstEntry(first);
-    rof.setNEntries(number);
-
-    if (tracks.size()) {
-      irFrames.emplace_back(rof.getBCData(), rof.getBCData() + nBCPerTF - 1);
+    timeFrame->setMultiplicityCutMask(processingMask);
+    mTracker->clustersToTracks(logger, errorLogger);
+    if (timeFrame->hasBogusClusters()) {
+      LOG(warning) << fmt::format(" - The processed timeframe had {} clusters with wild z coordinates, check the dictionaries", timeFrame->hasBogusClusters());
     }
-    std::copy(trackLabels.begin(), trackLabels.end(), std::back_inserter(allTrackLabels));
-    // Some conversions that needs to be moved in the tracker internals
-    for (unsigned int iTrk{0}; iTrk < tracks.size(); ++iTrk) {
-      auto& trc{tracks[iTrk]};
-      trc.setFirstClusterEntry(allClusIdx.size()); // before adding tracks, create final cluster indices
-      int ncl = trc.getNumberOfClusters(), nclf = 0;
-      for (int ic = TrackITSExt::MaxClusters; ic--;) { // track internally keeps in->out cluster indices, but we want to store the references as out->in!!!
-        auto clid = trc.getClusterIndex(ic);
-        if (clid >= 0) {
-          allClusIdx.push_back(clid);
-          nclf++;
-        }
+
+    for (unsigned int iROF{0}; iROF < rofs.size(); ++iROF) {
+
+      auto& rof{rofs[iROF]};
+      tracks = timeFrame->getTracks(iROF);
+      trackLabels = timeFrame->getTracksLabel(iROF);
+      auto number{tracks.size()};
+      auto first{allTracks.size()};
+      int offset = -rof.getFirstEntry(); // cluster entry!!!
+      rof.setFirstEntry(first);
+      rof.setNEntries(number);
+
+      if (tracks.size()) {
+        irFrames.emplace_back(rof.getBCData(), rof.getBCData() + nBCPerTF - 1);
       }
-      assert(ncl == nclf);
-      allTracks.emplace_back(trc);
+      std::copy(trackLabels.begin(), trackLabels.end(), std::back_inserter(allTrackLabels));
+      // Some conversions that needs to be moved in the tracker internals
+      for (unsigned int iTrk{0}; iTrk < tracks.size(); ++iTrk) {
+        auto& trc{tracks[iTrk]};
+        trc.setFirstClusterEntry(allClusIdx.size()); // before adding tracks, create final cluster indices
+        int ncl = trc.getNumberOfClusters(), nclf = 0;
+        for (int ic = TrackITSExt::MaxClusters; ic--;) { // track internally keeps in->out cluster indices, but we want to store the references as out->in!!!
+          auto clid = trc.getClusterIndex(ic);
+          if (clid >= 0) {
+            allClusIdx.push_back(clid);
+            nclf++;
+          }
+        }
+        assert(ncl == nclf);
+        allTracks.emplace_back(trc);
+      }
     }
-  }
-  LOGP(info, "ITSTracker pushed {} and {} vertices", allTracks.size(), vertices.size());
-  if (mIsMC) {
-    LOGP(info, "ITSTracker pushed {} track labels", allTrackLabels.size());
-    pc.outputs().snapshot(Output{"ITS", "TRACKSMCTR", 0, Lifetime::Timeframe}, allTrackLabels);
-    pc.outputs().snapshot(Output{"ITS", "ITSTrackMC2ROF", 0, Lifetime::Timeframe}, mc2rofs);
+    LOGP(info, "ITSTracker pushed {} and {} vertices", allTracks.size(), vertices.size());
+    if (mIsMC) {
+      LOGP(info, "ITSTracker pushed {} track labels", allTrackLabels.size());
+      pc.outputs().snapshot(Output{"ITS", "TRACKSMCTR", 0, Lifetime::Timeframe}, allTrackLabels);
+      pc.outputs().snapshot(Output{"ITS", "ITSTrackMC2ROF", 0, Lifetime::Timeframe}, mc2rofs);
+    }
   }
   mTimer.Stop();
 }

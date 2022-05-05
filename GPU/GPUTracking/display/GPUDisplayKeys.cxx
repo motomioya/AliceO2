@@ -13,7 +13,6 @@
 /// \author David Rohr
 
 #include "GPUDisplay.h"
-#ifdef GPUCA_BUILD_EVENT_DISPLAY
 
 using namespace GPUCA_NAMESPACE::gpu;
 
@@ -48,6 +47,7 @@ const char* HelpText[] = {
   "[o] / [p] / [O] / [P]         Save / restore current camera position / Animation path",
   "[h]                           Print Help",
   "[H]                           Show info texts",
+  "[q] / [Q]                     Start / Stop Qt GUI",
   "[w] / [s] / [a] / [d]         Zoom / Strafe Left and Right",
   "[pgup] / [pgdn]               Strafe up / down",
   "[e] / [f]                     Rotate left / right",
@@ -456,6 +456,12 @@ void GPUDisplay::HandleKey(unsigned char key)
   } else if (key == 'h') {
     PrintHelp();
     SetInfo("Showing help text", 1);
+  } else if (key == 'q') {
+    SetInfo("Starting GUI", 1);
+    mFrontend->startGUI();
+  } else if (key == 'Q') {
+    SetInfo("Stopping GUI", 1);
+    mFrontend->stopGUI();
   }
   /*
   else if (key == '^')
@@ -514,5 +520,3 @@ void GPUDisplay::PrintGLHelpText(float colorValue)
     OpenGLPrint(HelpText[i], 40.f, 35 + std::max(20, mDrawTextFontSize + 4) * (1 + i), colorValue, colorValue, colorValue, mInfoHelpTimer.GetCurrentElapsedTime() >= 5 ? (6 - mInfoHelpTimer.GetCurrentElapsedTime()) : 1, false);
   }
 }
-
-#endif

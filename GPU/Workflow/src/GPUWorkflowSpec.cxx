@@ -50,7 +50,7 @@
 #include "GPUO2Interface.h"
 #include "CalibdEdxContainer.h"
 #include "TPCPadGainCalib.h"
-#include "GPUDisplayFrontend.h"
+#include "display/GPUDisplayInterface.h"
 #include "DataFormatsParameters/GRPObject.h"
 #include "TPCBase/Sector.h"
 #include "TPCBase/Utils.h"
@@ -94,7 +94,7 @@ using ClusterGroupParser = o2::algorithm::ForwardParser<ClusterGroupHeader>;
 struct ProcessAttributes {
   std::unique_ptr<ClusterGroupParser> parser;
   std::unique_ptr<GPUO2Interface> tracker;
-  std::unique_ptr<GPUDisplayFrontend> displayFrontend;
+  std::unique_ptr<GPUDisplayFrontendInterface> displayFrontend;
   std::unique_ptr<TPCFastTransform> fastTransform;
   std::unique_ptr<TPCPadGainCalib> tpcPadGainCalib;
   std::unique_ptr<TPCPadGainCalib> tpcPadGainCalibBufferNew;
@@ -177,17 +177,13 @@ DataProcessorSpec getGPURecoWorkflowSpec(gpuworkflow::CompletionPolicyData* poli
       processAttributes->disableCalibUpdates = confParam.disableCalibUpdates;
       config.configInterface.dumpEvents = confParam.dump;
       if (confParam.display) {
-#ifdef GPUCA_BUILD_EVENT_DISPLAY
-        processAttributes->displayFrontend.reset(GPUDisplayFrontend::getFrontend("glfw"));
+        processAttributes->displayFrontend.reset(GPUDisplayFrontendInterface::getFrontend(config.configDisplay.displayFrontend.c_str()));
         config.configProcessing.eventDisplay = processAttributes->displayFrontend.get();
         if (config.configProcessing.eventDisplay != nullptr) {
           LOG(info) << "Event display enabled";
         } else {
           throw std::runtime_error("GPU Event Display frontend could not be created!");
         }
-#else
-        throw std::runtime_error("GPU Event Display not enabled at build time!");
-#endif
       }
 
       if (config.configGRP.continuousMaxTimeBin == -1) {

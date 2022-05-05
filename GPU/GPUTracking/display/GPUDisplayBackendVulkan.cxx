@@ -24,12 +24,12 @@ VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 using namespace GPUCA_NAMESPACE::gpu;
 
 #include "utils/qGetLdBinarySymbols.h"
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_vertex_vert_spv);
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_fragment_frag_spv);
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_vertexPoint_vert_spv);
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_vertexTexture_vert_spv);
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_fragmentTexture_frag_spv);
-QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_fragmentText_frag_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_vertex_vert_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_fragment_frag_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_vertexPoint_vert_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_vertexTexture_vert_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_fragmentTexture_frag_spv);
+QGET_LD_BINARY_SYMBOLS(shaders_shaders_fragmentText_frag_spv);
 
 //#define CHKERR(cmd) {cmd;}
 #define CHKERR(cmd)                                                                                     \
@@ -41,7 +41,11 @@ QGET_LD_BINARY_SYMBOLS(shaders_display_shaders_fragmentText_frag_spv);
     }                                                                                                   \
   } while (false)
 
-GPUDisplayBackendVulkan::GPUDisplayBackendVulkan() = default;
+GPUDisplayBackendVulkan::GPUDisplayBackendVulkan()
+{
+  mBackendType = TYPE_VULKAN;
+  mBackendName = "Vulkan";
+}
 GPUDisplayBackendVulkan::~GPUDisplayBackendVulkan() = default;
 
 // ---------------------------- VULKAN HELPERS ----------------------------
@@ -401,7 +405,7 @@ void GPUDisplayBackendVulkan::createDevice()
     mDebugMessenger = mInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, mDLD);
   }
   std::vector<vk::ExtensionProperties> extensions = vk::enumerateInstanceExtensionProperties(nullptr);
-  if (mEnableValidationLayers) {
+  if (mDisplay->param()->par.debugLevel >= 3) {
     std::cout << "available instance extensions: " << extensions.size() << "\n";
     for (const auto& extension : extensions) {
       std::cout << '\t' << extension.extensionName << '\n';
@@ -415,7 +419,7 @@ void GPUDisplayBackendVulkan::createDevice()
   const std::vector<const char*> reqDeviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
-  mPhysicalDevice = VK_NULL_HANDLE;
+  mPhysicalDevice = VkPhysicalDevice(VK_NULL_HANDLE);
   std::vector<vk::PhysicalDevice> devices = mInstance.enumeratePhysicalDevices();
   if (devices.size() == 0) {
     throw std::runtime_error("No Vulkan device present!");
@@ -718,7 +722,7 @@ void GPUDisplayBackendVulkan::createSwapChain(bool forScreenshot, bool forMixing
   swapCreateInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
   swapCreateInfo.presentMode = mPresentMode;
   swapCreateInfo.clipped = true;
-  swapCreateInfo.oldSwapchain = VK_NULL_HANDLE;
+  swapCreateInfo.oldSwapchain = VkSwapchainKHR(VK_NULL_HANDLE);
   if (mSwapchainImageReadable) {
     swapCreateInfo.imageUsage |= vk::ImageUsageFlagBits::eTransferSrc;
   }
@@ -1131,8 +1135,8 @@ void GPUDisplayBackendVulkan::createPipeline()
   // pipelineInfo.renderPass // below
   pipelineInfo.subpass = 0;
   pipelineInfo.pStages = shaderStages;
-  pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; // Optional
-  pipelineInfo.basePipelineIndex = -1;              // Optional
+  pipelineInfo.basePipelineHandle = VkPipeline(VK_NULL_HANDLE); // Optional
+  pipelineInfo.basePipelineIndex = -1;                          // Optional
 
   mPipelines.resize(mMixingSupported ? 5 : 4);
   static constexpr vk::PrimitiveTopology types[3] = {vk::PrimitiveTopology::ePointList, vk::PrimitiveTopology::eLineList, vk::PrimitiveTopology::eLineStrip};
@@ -1178,7 +1182,7 @@ void GPUDisplayBackendVulkan::createPipeline()
       viewport.height = scissor.extent.height = mRenderHeight;
     }
 
-    CHKERR(mDevice.createGraphicsPipelines(VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &mPipelines[i])); // TODO: multiple at once + cache?
+    CHKERR(mDevice.createGraphicsPipelines(VkPipelineCache(VK_NULL_HANDLE), 1, &pipelineInfo, nullptr, &mPipelines[i])); // TODO: multiple at once + cache?
   }
 }
 
@@ -1224,7 +1228,7 @@ void GPUDisplayBackendVulkan::clearPipeline()
 // ---------------------------- VULKAN SHADERS ----------------------------
 
 #define LOAD_SHADER(file, ext) \
-  mShaders[#file] = createShaderModule(_binary_shaders_display_shaders_##file##_##ext##_spv_start, _binary_shaders_display_shaders_##file##_##ext##_spv_len, mDevice)
+  mShaders[#file] = createShaderModule(_binary_shaders_shaders_##file##_##ext##_spv_start, _binary_shaders_shaders_##file##_##ext##_spv_len, mDevice)
 
 void GPUDisplayBackendVulkan::createShaders()
 {
@@ -1379,8 +1383,6 @@ void GPUDisplayBackendVulkan::clearImage(VulkanImage& image)
 
 int GPUDisplayBackendVulkan::InitBackendA()
 {
-  std::cout << "Initializing Vulkan\n";
-
   mEnableValidationLayers = mDisplay->param() && mDisplay->param()->par.debugLevel >= 2;
   mFramesInFlight = 2;
 
@@ -1391,13 +1393,11 @@ int GPUDisplayBackendVulkan::InitBackendA()
   createOffscreenBuffers();
   createPipeline();
 
-  std::cout << "Vulkan initialized\n";
   return (0);
 }
 
 void GPUDisplayBackendVulkan::ExitBackendA()
 {
-  std::cout << "Exiting Vulkan\n";
   mDevice.waitIdle();
   if (mFontImage.sizex && mFontImage.sizey) {
     clearImage(mFontImage);
@@ -1415,7 +1415,6 @@ void GPUDisplayBackendVulkan::ExitBackendA()
   clearTextureSampler();
   clearShaders();
   clearDevice();
-  std::cout << "Vulkan destroyed\n";
 }
 
 // ---------------------------- USER CODE ----------------------------
@@ -1482,10 +1481,13 @@ void GPUDisplayBackendVulkan::prepareDraw(const hmm_mat4& proj, const hmm_mat4& 
     mCurrentFrame = (mCurrentFrame + 1) % mFramesInFlight;
     CHKERR(mDevice.waitForFences(1, &mInFlightFence[mCurrentFrame], true, UINT64_MAX));
     auto getImage = [&]() {
-      vk::Fence fen = mCommandBufferPerImage ? mInFlightFence[mCurrentFrame] : VK_NULL_HANDLE;
-      vk::Semaphore sem = mCommandBufferPerImage ? VK_NULL_HANDLE : mImageAvailableSemaphore[mCurrentFrame];
+      vk::Fence fen = VkFence(VK_NULL_HANDLE);
+      vk::Semaphore sem = VkSemaphore(VK_NULL_HANDLE);
       if (mCommandBufferPerImage) {
+        fen = VkFence(mInFlightFence[mCurrentFrame]);
         CHKERR(mDevice.resetFences(1, &fen));
+      } else {
+        sem = mImageAvailableSemaphore[mCurrentFrame];
       }
       return mDevice.acquireNextImageKHR(mSwapChain, UINT64_MAX, sem, fen, &mCurrentImageIndex);
     };
@@ -1537,6 +1539,7 @@ void GPUDisplayBackendVulkan::finishDraw(bool doScreenshot, bool toMixBuffer, fl
 void GPUDisplayBackendVulkan::finishFrame(bool doScreenshot, bool toMixBuffer, float includeMixImage)
 {
   vk::Semaphore* stageFinishedSemaphore = &mRenderFinishedSemaphore[mCurrentFrame];
+  const vk::Fence noFence = VkFence(VK_NULL_HANDLE);
 
   vk::SubmitInfo submitInfo{};
   vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -1547,7 +1550,7 @@ void GPUDisplayBackendVulkan::finishFrame(bool doScreenshot, bool toMixBuffer, f
   submitInfo.pCommandBuffers = &mCurrentCommandBuffer;
   submitInfo.signalSemaphoreCount = 1;
   submitInfo.pSignalSemaphores = stageFinishedSemaphore;
-  CHKERR(mGraphicsQueue.submit(1, &submitInfo, includeMixImage > 0 || toMixBuffer || mHasDrawnText || mDownsampleFSAA ? VK_NULL_HANDLE : mInFlightFence[mCurrentFrame]));
+  CHKERR(mGraphicsQueue.submit(1, &submitInfo, includeMixImage > 0 || toMixBuffer || mHasDrawnText || mDownsampleFSAA ? noFence : mInFlightFence[mCurrentFrame]));
   if (!toMixBuffer) {
     if (includeMixImage > 0.f) {
       mixImages(mCommandBuffersTexture[mCurrentBufferSet], includeMixImage);
@@ -1557,7 +1560,7 @@ void GPUDisplayBackendVulkan::finishFrame(bool doScreenshot, bool toMixBuffer, f
       submitInfo.pCommandBuffers = &mCommandBuffersTexture[mCurrentBufferSet];
       stageFinishedSemaphore = &mMixFinishedSemaphore[mCurrentFrame];
       submitInfo.pSignalSemaphores = stageFinishedSemaphore;
-      CHKERR(mGraphicsQueue.submit(1, &submitInfo, mHasDrawnText || mDownsampleFSAA ? VK_NULL_HANDLE : mInFlightFence[mCurrentFrame]));
+      CHKERR(mGraphicsQueue.submit(1, &submitInfo, mHasDrawnText || mDownsampleFSAA ? noFence : mInFlightFence[mCurrentFrame]));
     }
 
     if (mDownsampleFSAA) {
@@ -1568,7 +1571,7 @@ void GPUDisplayBackendVulkan::finishFrame(bool doScreenshot, bool toMixBuffer, f
       submitInfo.waitSemaphoreCount = 1;
       stageFinishedSemaphore = &mDownsampleFinishedSemaphore[mCurrentFrame];
       submitInfo.pSignalSemaphores = stageFinishedSemaphore;
-      CHKERR(mGraphicsQueue.submit(1, &submitInfo, mHasDrawnText ? VK_NULL_HANDLE : mInFlightFence[mCurrentFrame]));
+      CHKERR(mGraphicsQueue.submit(1, &submitInfo, mHasDrawnText ? noFence : mInFlightFence[mCurrentFrame]));
     }
 
     if (doScreenshot) {
@@ -1761,7 +1764,7 @@ void GPUDisplayBackendVulkan::addFontSymbol(int symbol, int sizex, int sizey, in
   if (symbol != (int)mFontSymbols.size()) {
     throw std::runtime_error("Incorrect symbol ID");
   }
-  mFontSymbols.emplace_back(FontSymbolVulkan{sizex, sizey, offsetx, offsety, advance, nullptr, 0.f, 0.f, 0.f, 0.f});
+  mFontSymbols.emplace_back(FontSymbolVulkan{{{sizex, sizey}, {offsetx, offsety}, advance}, nullptr, 0.f, 0.f, 0.f, 0.f});
   auto& buffer = mFontSymbols.back().data;
   if (sizex && sizey) {
     buffer.reset(new char[sizex * sizey]);
@@ -1795,7 +1798,7 @@ void GPUDisplayBackendVulkan::initializeTextDrawing()
       for (int j = 0; j < s.size[0]; j++) {
         char val = s.data.get()[j + k * s.size[0]];
         if (!smooth) {
-          val = val < 0 ? 255 : 0;
+          val = val < 0 ? 0xFF : 0;
         }
         bigImage.get()[(colx + j) + (rowy + k) * sizex] = val;
       }
