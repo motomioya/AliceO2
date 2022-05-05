@@ -280,9 +280,6 @@ void MFTAssessment::createHistos()
       ++n3Histo;
     }
 
-    mAcceptanceEta = std::make_unique<TH1F>("mMFTAcceptanceEta", "MFT Acceptance", 35, 1.0, 4.5);
-    mEfficiencyEta = std::make_unique<TH1F>("mMFTEfficiencyEta", "MFT Efficiency", 35, 1.0, 4.5);
-    mEffAccEta = std::make_unique<TH1F>("mMFTEffAccEta", "MFT Efficiency x Acceptance", 35, 1.0, 4.5);
   }
 }
 
@@ -892,7 +889,10 @@ void MFTAssessment::finalizeAnalysis()
     auto GenEtaProj = (TH1*)mHistPhiVsEta[kGen]->ProjectionX("_GenEtaProj");
     auto RecoEtaProj = (TH1*)mHistPhiVsEta[kReco]->ProjectionX("_RecoEtaProj");
     auto TrackableEtaProj = (TH1*)mHistPhiVsEta[kTrackable]->ProjectionX("_TrackableEtaProj");
-
+    
+    mAcceptanceEta = std::make_unique<TH1F>("mMFTAcceptanceEta", "MFT Acceptance", 35, 1.0, 4.5);
+    mEfficiencyEta = std::make_unique<TH1F>("mMFTEfficiencyEta", "MFT Efficiency", 35, 1.0, 4.5);
+    mEffAccEta = std::make_unique<TH1F>("mMFTEffAccEta", "MFT Efficiency x Acceptance", 35, 1.0, 4.5);
 
     mAcceptanceEta->Divide(TrackableEtaProj,GenEtaProj);
     mEfficiencyEta->Divide(RecoEtaProj,TrackableEtaProj);
