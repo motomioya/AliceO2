@@ -48,7 +48,10 @@ int ioutils::loadROFrameData(const o2::itsmft::ROFRecord& rof, ROframe<T>& event
   for (auto& c : clusters_in_frame) {
     auto sensorID = c.getSensorID();
     int layer = geom->getLayer(sensorID);
-    //if (layer == 0 || layer == 1) continue;//added for deadchip study
+    if (layer == 0 || layer == 1) {
+      clusterId++;
+      continue;
+    }
     auto pattID = c.getPatternID();
     o2::math_utils::Point3D<float> locXYZ;
     float sigmaX2 = ioutils::DefClusError2Row, sigmaY2 = ioutils::DefClusError2Col; //Dummy COG errors (about half pixel size)
@@ -98,9 +101,9 @@ void ioutils::convertCompactClusters(gsl::span<const itsmft::CompClusterExt> clu
   for (auto& c : clusters) {
     auto chipID = c.getChipID();
     auto pattID = c.getPatternID();
-    //auto sensorID = c.getSensorID();//added for deadchip study
-    //int layer = geom->getLayer(sensorID);//added for deadchip study
-    //if (layer == 0 || layer == 1) continue;//added for deadchip study
+    auto sensorID = c.getSensorID();
+    int layer = geom->getLayer(sensorID);
+    if (layer == 0 || layer == 1) continue;
     o2::math_utils::Point3D<float> locXYZ;
     float sigmaX2 = DefClusError2Row, sigmaY2 = DefClusError2Col;
     if (pattID != itsmft::CompCluster::InvalidPatternID) {
